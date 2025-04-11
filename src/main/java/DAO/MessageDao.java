@@ -41,11 +41,11 @@ public class MessageDao {
         
         try {
             String sql = "SELECT * FROM message WHERE message_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement prepStatement = connection.prepareStatement(sql);
          
-            preparedStatement.setInt(1, key);
+            prepStatement.setInt(1, key);
 
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = prepStatement.executeQuery();
 
             while(rs.next()){
                 Message book = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
@@ -62,15 +62,15 @@ public class MessageDao {
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "INSERT INTO message (posted_by, message_text, time_posted_epoch) VALUES(?,?,?)" ;
-            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement prepStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 
-            preparedStatement.setInt(1, m.getPosted_by());
-            preparedStatement.setString(2, m.getMessage_text());
-            preparedStatement.setLong(3, m.getTime_posted_epoch());
+            prepStatement.setInt(1, m.getPosted_by());
+            prepStatement.setString(2, m.getMessage_text());
+            prepStatement.setLong(3, m.getTime_posted_epoch());
 
-            preparedStatement.executeUpdate();
-            ResultSet pResultSet = preparedStatement.getGeneratedKeys();
+            prepStatement.executeUpdate();
+            ResultSet pResultSet = prepStatement.getGeneratedKeys();
 
             while(pResultSet.next()){
                 int id = pResultSet.getInt(1);
@@ -89,11 +89,11 @@ public class MessageDao {
         
         try {
             String sql = "Delete FROM message WHERE message_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement prepStatement = connection.prepareStatement(sql);
          
-            preparedStatement.setInt(1, message.getMessage_id());
+            prepStatement.setInt(1, message.getMessage_id());
 
-            preparedStatement.executeUpdate();
+            prepStatement.executeUpdate();
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -106,18 +106,18 @@ public class MessageDao {
         try {
             String sql = "UPDATE message SET message_text = ? WHERE message_id = ?" ;
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, m.getMessage_text());
-            preparedStatement.setInt(2, id);
+            PreparedStatement prepStatement = connection.prepareStatement(sql);
+            prepStatement.setString(1, m.getMessage_text());
+            prepStatement.setInt(2, id);
 
 
-            int updatedNum = preparedStatement.executeUpdate();
+            int updatedNum = prepStatement.executeUpdate();
 
             if(updatedNum > 0){
                 sql = "SELECT * FROM message WHERE message_id = ?";
-                PreparedStatement prepStatement = connection.prepareStatement(sql);
-                prepStatement.setInt(1, id);
-                ResultSet rs = prepStatement.executeQuery();
+                PreparedStatement prepStatement1 = connection.prepareStatement(sql);
+                prepStatement1.setInt(1, id);
+                ResultSet rs = prepStatement1.executeQuery();
 
                 if(rs.next()){
                     return new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
