@@ -2,19 +2,23 @@ package DAO;
 
 
 import Model.Message;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.sql.*;
 
 import Util.ConnectionUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/*
+ * The MessageDao handles database operations for the message table.
+  * It provides methods to interact with messages, such as retrieving, inserting, updating, and deleting message data
+  */
 public class MessageDao {
-
+    /*
+     * retrieves all message from the database
+     * Just here to help debug
+     * @return List<Message> A list of message objects representing all rows in the message table
+     */
     public List<Message> getAllMessages(){
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
@@ -35,7 +39,11 @@ public class MessageDao {
         return messages;
     }
 
-
+    /*
+     * getMessageByMessage retrieves a message by its message_id
+     * @param key the message_id to search for.
+     * @return Message the message object matching the provided messageid or null if not found
+     */
     public Message getMessageByMessage(int key){
         Connection connection = ConnectionUtil.getConnection();
         
@@ -58,6 +66,12 @@ public class MessageDao {
         return null;
     }
 
+    /*
+     * createMessage inserts a new message into the database
+     * 
+     * @param m the message object containing the message data to be inserted
+     * @return Message the inserted nessage or null if insert failed
+     */
     public Message createMessage(Message m){
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -83,7 +97,10 @@ public class MessageDao {
         return null;
     }
 
-
+    /*
+     * deleteM deletes a message from the database by message_id
+     * @param message the message object to be deleted from the database
+     */
     public void deleteM(Message message){
         Connection connection = ConnectionUtil.getConnection();
         
@@ -100,6 +117,13 @@ public class MessageDao {
         }
     }
     
+
+    /*
+     * updateM updates the messagetext of an existing message in the databas
+     * @param m the message object
+     * @param id the messageid of the message to be updated
+     * @return Message the updated message object or null if the update fails
+     */
     public Message updateM(Message m, int id){
         Connection connection = ConnectionUtil.getConnection();
 
@@ -133,6 +157,11 @@ public class MessageDao {
 
     }
 
+    /*
+     * getAllMbyUser retrieves all messages posted by a specific user from the database
+     * @param postedby The user_id of the user whose messages are to be retrieved from
+     * @return List<Message> A list of message objects posted by the user 
+     */
     public List<Message> getAllMbyUser(int postedby){
         Connection connection = ConnectionUtil.getConnection();
         
